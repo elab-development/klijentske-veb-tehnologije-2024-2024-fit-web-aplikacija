@@ -1,49 +1,47 @@
-import { useMemo } from 'react';
-import { usePlannerStore } from '../../store/plannerStore';
-import { ProgressTracker } from '../../domain/ProgressTracker';
+import { type WorkoutSession } from './types';
 
-function getThisWeekRangeISO() {
-  const now = new Date();
-  const day = now.getDay();
-  const diffToMonday = (day + 6) % 7;
-  const monday = new Date(now);
-  monday.setHours(0, 0, 0, 0);
-  monday.setDate(now.getDate() - diffToMonday);
+export class ProgressTracker {
+  private readonly sessions: WorkoutSession[];
 
-  const sunday = new Date(monday);
-  sunday.setDate(monday.getDate() + 6);
-  sunday.setHours(23, 59, 59, 999);
+  constructor(sessions: WorkoutSession[] = []) {
+    this.sessions = sessions;
+  }
 
-  return { start: monday.toISOString(), end: sunday.toISOString() };
-}
+  totalSessions(): number {
+    return this.sessions.length;
+  }
 
-export default function WeeklyStatsPreview() {
-  const sessions = usePlannerStore((s) => s.sessions);
+  totalVolume(): number {
+    return this.sessions.reduce((sum, s) => {
+      const sessionVolume = s.items.reduce((acc, it) => {
+        const w = it.weight ?? 0;
+        return acc + w * it.reps * it.sets;
+      }, 0);
+      return sum + sessionVolume;
+    }, 0);
+  }
 
-  const { totalSessions, totalVolume, weeklyCount } = useMemo(() => {
-    const tracker = new ProgressTracker(sessions);
-    const { start, end } = getThisWeekRangeISO();
-    return {
-      totalSessions: tracker.totalSessions(),
-      totalVolume: tracker.totalVolume(),
-      weeklyCount: tracker.weeklyCount(start, end),
-    };
-  }, [sessions]);
+  bestForExercise(exerciseName: string): number {
+    const target = exerciseName.trim().toLowerCase();
+    let best = 0;
+    for (const s of this.sessions) {
+      for (const it of s.items) {
+        if (it.name.trim().toLowerCase() === target) {
+          best = Math.max(best, it.weight ?? 0);
+        }
+      }
+    }
+    return best;
+  }
 
-  return (
-    <div className='grid grid-cols-1 gap-4 sm:grid-cols-3'>
-      <div className='rounded-xl border p-4'>
-        <div className='text-sm text-gray-500'>Total Sessions</div>
-        <div className='text-2xl font-semibold'>{totalSessions}</div>
-      </div>
-      <div className='rounded-xl border p-4'>
-        <div className='text-sm text-gray-500'>Total Volume (kg·reps)</div>
-        <div className='text-2xl font-semibold'>{totalVolume}</div>
-      </div>
-      <div className='rounded-xl border p-4'>
-        <div className='text-sm text-gray-500'>This Week</div>
-        <div className='text-2xl font-semibold'>{weeklyCount}</div>
-      </div>
-    </div>
-  );
+  weeklyCount(weekStartISO: string, weekEndISO: string): number {
+    const start = new Date(weekStartISO).getTime();
+    const end = new Date(weekEndISO).getTime();
+    if (Number.isNaN(start) || Number.isNaN(end)) return 0;
+
+    return this.sessions.filter((s) => {
+      const t = new Date(s.dateISO).getTime();
+      return t >= start && t <= end;
+    }).length;
+  }
 }
