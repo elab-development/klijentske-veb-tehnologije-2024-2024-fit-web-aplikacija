@@ -11,7 +11,7 @@ export class AppStorage {
   private key: string;
   private currentVersion = 1;
 
-  constructor(key = 'fitness-app:v1') {
+  constructor(key = 'fitness-planner:v1') {
     this.key = key;
   }
 
