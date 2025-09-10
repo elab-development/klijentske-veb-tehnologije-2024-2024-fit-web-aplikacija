@@ -5,7 +5,7 @@ type Props = { exercise: Exercise; onAdd?: (exercise: Exercise) => void };
 
 export default function ExerciseCard({ exercise, onAdd }: Props) {
   return (
-    <div className='flex min-h-[180px] flex-col justify-between rounded-xl shadow-sm bg-white p-4 shadow-sm transition hover:shadow-md'>
+    <div className='flex min-h-[180px] flex-col justify-between rounded-xl bg-white p-4 shadow-sm transition hover:shadow-md'>
       <div>
         <h3 className='line-clamp-2 text-base font-semibold text-gray-900'>
           {exercise.name || 'Unnamed exercise'}
