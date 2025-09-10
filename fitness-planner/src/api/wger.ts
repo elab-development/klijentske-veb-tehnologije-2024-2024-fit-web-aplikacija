@@ -28,6 +28,10 @@ type Paged<T> = {
   results: T[];
 };
 
+type Category = { id: number; name: string };
+type Equipment = { id: number; name: string };
+type Muscle = { id: number; name: string; name_en: string; is_front: boolean };
+
 export async function fetchExercisesAPI(params?: {
   search?: string;
   nextUrl?: string | null;
@@ -55,4 +59,39 @@ export async function fetchExercisesAPI(params?: {
   }
 
   return { items, nextUrl: data.next };
+}
+
+async function fetchAllPages<T>(path: string): Promise<T[]> {
+  let url: string | null = `${BASE}/${path}/?limit=100`;
+  const out: T[] = [];
+  while (url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Failed to fetch ${path} (${res.status})`);
+    const data = (await res.json()) as Paged<T>;
+    out.push(...data.results);
+    url = data.next;
+  }
+  return out;
+}
+
+export async function fetchCategoriesAPI(): Promise<
+  { id: number; name: string }[]
+> {
+  const cats = await fetchAllPages<Category>('exercisecategory');
+  return cats.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+export async function fetchEquipmentAPI(): Promise<
+  { id: number; name: string }[]
+> {
+  const eq = await fetchAllPages<Equipment>('equipment');
+  return eq.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+export async function fetchMusclesAPI(): Promise<
+  { id: number; name: string }[]
+> {
+  const muscles = await fetchAllPages<Muscle>('muscle');
+  const mapped = muscles.map((m) => ({ id: m.id, name: m.name_en || m.name }));
+  return mapped.sort((a, b) => a.name.localeCompare(b.name));
 }

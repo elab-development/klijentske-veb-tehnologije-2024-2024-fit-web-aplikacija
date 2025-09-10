@@ -1,28 +1,75 @@
-// src/store/exercisesStore.ts
 import { create } from 'zustand';
 import type { Exercise } from '../domain/types';
-import { fetchExercisesAPI } from '../api/wger';
+import {
+  fetchExercisesAPI,
+  fetchCategoriesAPI,
+  fetchEquipmentAPI,
+  fetchMusclesAPI,
+} from '../api/wger';
+
+type Named = { id: number; name: string };
 
 type ExercisesState = {
   items: Exercise[];
-  loading: boolean;
-  error?: string;
-  search: string;
   nextUrl: string | null;
 
+  loading: boolean;
+  error?: string;
+
+  search: string;
   setSearch: (q: string) => void;
+
+  categories: Named[];
+  equipment: Named[];
+  muscles: Named[];
+  taxLoading: boolean;
+  taxError?: string;
+  loadTaxonomies: () => Promise<void>;
+
   fetchFirstPage: () => Promise<void>;
   fetchNextPage: () => Promise<void>;
 };
 
 export const useExercisesStore = create<ExercisesState>((set, get) => ({
   items: [],
-  loading: false,
-  error: undefined,
-  search: '',
   nextUrl: null,
 
+  loading: false,
+  error: undefined,
+
+  search: '',
   setSearch: (q) => set({ search: q }),
+
+  categories: [],
+  equipment: [],
+  muscles: [],
+  taxLoading: false,
+  taxError: undefined,
+  loadTaxonomies: async () => {
+    const { taxLoading, categories, equipment, muscles } = get();
+    if (taxLoading || (categories.length && equipment.length && muscles.length))
+      return;
+
+    set({ taxLoading: true, taxError: undefined });
+    try {
+      const [cats, eq, mus] = await Promise.all([
+        fetchCategoriesAPI(),
+        fetchEquipmentAPI(),
+        fetchMusclesAPI(),
+      ]);
+      set({
+        taxLoading: false,
+        categories: cats,
+        equipment: eq,
+        muscles: mus,
+      });
+    } catch (e: any) {
+      set({
+        taxLoading: false,
+        taxError: e?.message ?? 'Failed to load taxonomies',
+      });
+    }
+  },
 
   fetchFirstPage: async () => {
     const { search } = get();
