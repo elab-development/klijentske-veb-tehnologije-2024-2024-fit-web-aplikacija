@@ -1,27 +1,32 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
-import Dashboard from './pages/Dashboard';
-import Planner from './pages/Planner';
-import ExerciseExplorer from './pages/ExerciseExplorer';
-import Journal from './pages/Journal';
+import { AuthProvider } from './store/auth-context';
+import { RequireAuth, RedirectIfAuth } from './routes/guards';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Rentals from './pages/Rentals';
+import RentalDetails from './pages/RentalDetails';
 
-function App() {
+export default function App() {
   return (
-    <>
-      <Router>
-        <Header />
+    <AuthProvider>
+      <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Dashboard />} />
-          <Route path='/planner' element={<Planner />} />
-          <Route path='/exercises' element={<ExerciseExplorer />} />
-          <Route path='/journal' element={<Journal />} />
+          <Route element={<RedirectIfAuth />}>
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+          </Route>
+
+          <Route element={<RequireAuth />}>
+            <Route path='/' element={<Home />} />
+            <Route path='/rentals' element={<Rentals />} />
+            <Route path='/rentals/:id' element={<RentalDetails />} />
+          </Route>
+
+          <Route path='*' element={<RedirectIfAuth />} />
         </Routes>
-        <Footer />
-      </Router>
-    </>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
-
-export default App;
