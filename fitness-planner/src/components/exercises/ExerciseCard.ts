@@ -5,25 +5,25 @@ type Props = { exercise: Exercise; onAdd?: (exercise: Exercise) => void };
 
 export default function ExerciseCard({ exercise, onAdd }: Props) {
   return (
-    <div className='flex min-h-[180px] flex-col justify-between rounded-xl border bg-white p-4 shadow-sm transition hover:shadow-md dark:border-gray-800 dark:bg-gray-900'>
+    <div className='flex min-h-[180px] flex-col justify-between rounded-xl shadow-sm bg-white p-4 shadow-sm transition hover:shadow-md'>
       <div>
-        <h3 className='line-clamp-2 text-base font-semibold text-gray-900 dark:text-gray-100'>
+        <h3 className='line-clamp-2 text-base font-semibold text-gray-900'>
           {exercise.name || 'Unnamed exercise'}
         </h3>
-        <div className='mt-2 flex flex-wrap gap-2 text-xs text-gray-500 dark:text-gray-400'>
+        <div className='mt-2 flex flex-wrap gap-2 text-xs text-gray-500 '>
           {exercise.category && (
-            <span className='rounded-full bg-gray-100 px-2 py-1 dark:bg-gray-800'>
+            <span className='rounded-full bg-gray-100 px-2 py-1'>
               Cat: {exercise.category}
             </span>
           )}
           {exercise.muscles.length > 0 && (
-            <span className='rounded-full bg-gray-100 px-2 py-1 dark:bg-gray-800'>
+            <span className='rounded-full bg-gray-100 px-2 py-1'>
               Muscles: {exercise.muscles.slice(0, 2).join(', ')}
               {exercise.muscles.length > 2 ? '…' : ''}
             </span>
           )}
           {exercise.equipment && exercise.equipment.length > 0 && (
-            <span className='rounded-full bg-gray-100 px-2 py-1 dark:bg-gray-800'>
+            <span className='rounded-full bg-gray-100 px-2 py-1'>
               Equip: {exercise.equipment.slice(0, 2).join(', ')}
               {exercise.equipment.length > 2 ? '…' : ''}
             </span>

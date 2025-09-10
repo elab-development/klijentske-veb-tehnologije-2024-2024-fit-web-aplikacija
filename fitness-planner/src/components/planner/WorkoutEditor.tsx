@@ -30,9 +30,9 @@ export default function WorkoutEditor({
         </button>
       </div>
 
-      <div className='overflow-x-auto rounded-xl border dark:border-gray-800'>
+      <div className='overflow-x-auto rounded-xl shadow-sm'>
         <table className='min-w-full text-sm'>
-          <thead className='bg-gray-50 text-left dark:bg-gray-900/60'>
+          <thead className='bg-gray-50 text-left'>
             <tr>
               <th className='px-3 py-2 font-semibold'>Exercise name</th>
               <th className='px-3 py-2 font-semibold'>Sets</th>
@@ -51,12 +51,12 @@ export default function WorkoutEditor({
               </tr>
             ) : (
               items.map((it, i) => (
-                <tr key={i} className='border-t dark:border-gray-800'>
+                <tr key={i} className='border-t'>
                   <td className='px-3 py-2'>
                     <input
                       value={it.name}
                       onChange={(e) => onUpdate(i, { name: e.target.value })}
-                      className='w-full rounded-lg border border-gray-300 bg-white px-2 py-1 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-800 dark:bg-gray-900'
+                      className='w-full rounded-lg border border-gray-300 bg-white px-2 py-1 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20'
                     />
                   </td>
                   <td className='px-3 py-2'>
@@ -67,7 +67,7 @@ export default function WorkoutEditor({
                       onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         onUpdate(i, { sets: num(e.target.value) ?? 0 })
                       }
-                      className='w-20 rounded-lg border border-gray-300 bg-white px-2 py-1 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-800 dark:bg-gray-900'
+                      className='w-20 rounded-lg border border-gray-300 bg-white px-2 py-1 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20'
                     />
                   </td>
                   <td className='px-3 py-2'>
@@ -78,7 +78,7 @@ export default function WorkoutEditor({
                       onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         onUpdate(i, { reps: num(e.target.value) ?? 0 })
                       }
-                      className='w-20 rounded-lg border border-gray-300 bg-white px-2 py-1 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-800 dark:bg-gray-900'
+                      className='w-20 rounded-lg border border-gray-300 bg-white px-2 py-1 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20'
                     />
                   </td>
                   <td className='px-3 py-2'>
@@ -90,7 +90,7 @@ export default function WorkoutEditor({
                       onChange={(e: ChangeEvent<HTMLInputElement>) =>
                         onUpdate(i, { weight: num(e.target.value) ?? 0 })
                       }
-                      className='w-24 rounded-lg border border-gray-300 bg-white px-2 py-1 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-800 dark:bg-gray-900'
+                      className='w-24 rounded-lg border border-gray-300 bg-white px-2 py-1 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20'
                     />
                   </td>
                   <td className='px-3 py-2 text-right'>
