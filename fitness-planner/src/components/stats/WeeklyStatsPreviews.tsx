@@ -15,22 +15,17 @@ function getThisWeekRangeISO() {
   sunday.setDate(monday.getDate() + 6);
   sunday.setHours(23, 59, 59, 999);
 
-  return {
-    start: monday.toISOString(),
-    end: sunday.toISOString(),
-    monday,
-    sunday,
-  };
+  return { start: monday.toISOString(), end: sunday.toISOString(), monday };
 }
 
-export default function WeeklyStatsPreview() {
+export default function WeeklyStatsPreviews() {
   const sessions = useJournalStore((s) => s.sessions);
 
   const { weekCount, weekVolume, streakDays } = useMemo(() => {
     const { start, end, monday } = getThisWeekRangeISO();
     const tracker = new ProgressTracker(sessions);
-    const weekCount = tracker.weeklyCount(start, end);
 
+    const weekCount = tracker.weeklyCount(start, end);
     const weekVolume = sessions
       .filter((s) => {
         const t = new Date(s.dateISO).getTime();
@@ -52,7 +47,6 @@ export default function WeeklyStatsPreview() {
       d.setHours(0, 0, 0, 0);
       if (d >= monday && d <= today) trainedDays.add(d.getTime());
     });
-
     let streak = 0;
     const cursor = new Date(today);
     while (cursor >= monday) {
@@ -68,21 +62,17 @@ export default function WeeklyStatsPreview() {
 
   const cards = [
     {
-      icon: (
-        <CalendarDays className='h-5 w-5 text-indigo-600 dark:text-indigo-400' />
-      ),
+      icon: <CalendarDays className='h-5 w-5 text-indigo-600' />,
       label: 'Sessions this week',
       value: weekCount,
     },
     {
-      icon: (
-        <BarChart2 className='h-5 w-5 text-indigo-600 dark:text-indigo-400' />
-      ),
+      icon: <BarChart2 className='h-5 w-5 text-indigo-600' />,
       label: 'Weekly volume (kg·reps)',
       value: weekVolume,
     },
     {
-      icon: <Flame className='h-5 w-5 text-indigo-600 dark:text-indigo-400' />,
+      icon: <Flame className='h-5 w-5 text-indigo-600' />,
       label: 'Current streak (days)',
       value: streakDays,
     },
@@ -91,11 +81,8 @@ export default function WeeklyStatsPreview() {
   return (
     <div className='grid grid-cols-1 gap-4 sm:grid-cols-3'>
       {cards.map((c, i) => (
-        <div
-          key={i}
-          className='rounded-xl border bg-white p-4 dark:border-gray-800 dark:bg-gray-900'
-        >
-          <div className='flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400'>
+        <div key={i} className='rounded-xl bg-white p-4 shadow'>
+          <div className='flex items-center gap-2 text-sm text-gray-500'>
             {c.icon}
             <span>{c.label}</span>
           </div>

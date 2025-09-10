@@ -18,20 +18,20 @@ export default function Dashboard() {
     navigate(`/planner`);
   }
 
-  return
+  return (
     <div className='space-y-10'>
-      <section className='border-b bg-gradient-to-b from-indigo-50 to-white dark:from-indigo-950/20 dark:to-gray-950'>
+      <section className='bg-gradient-to-b from-indigo-50 to-white'>
         <div className='mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8'>
           <div className='flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between'>
             <div>
-              <div className='inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-white px-3 py-1 text-xs font-medium text-indigo-700 shadow-sm dark:border-indigo-900/40 dark:bg-indigo-950/30 dark:text-indigo-300'>
+              <div className='inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-white px-3 py-1 text-xs font-medium text-indigo-700 shadow-sm'>
                 <Dumbbell className='h-4 w-4' />
                 Fitness made simple
               </div>
-              <h1 className='mt-3 text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl'>
+              <h1 className='mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
                 Plan workouts, explore exercises, track progress.
               </h1>
-              <p className='mt-2 max-w-2xl text-sm text-gray-600 dark:text-gray-400'>
+              <p className='mt-2 max-w-2xl text-sm text-gray-600'>
                 Your all-in-one fitness companion — no accounts, no database,
                 just instant planning and tracking in your browser.
               </p>
@@ -39,14 +39,14 @@ export default function Dashboard() {
                 <button
                   type='button'
                   onClick={quickNewWorkout}
-                  className='inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500'
+                  className='inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-indigo-500'
                 >
                   <PlusCircle className='h-4 w-4' />
                   New Workout
                 </button>
                 <Link
                   to='/exercises'
-                  className='inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-800 transition hover:bg-gray-50 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100'
+                  className='inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-800 transition hover:bg-gray-50'
                 >
                   <Play className='h-4 w-4' />
                   Explore Exercises
@@ -54,16 +54,16 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className='w-full max-w-sm rounded-2xl border bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900'>
+            <div className='w-full max-w-sm rounded-2xl bg-white p-4 shadow'>
               <div className='text-sm text-gray-500'>Snapshot</div>
               <div className='mt-2 grid grid-cols-2 gap-3'>
-                <div className='rounded-xl border bg-white p-3 text-center dark:border-gray-800 dark:bg-gray-950'>
+                <div className='rounded-xl bg-white p-3 text-center shadow-sm'>
                   <div className='text-xs text-gray-500'>Total sessions</div>
                   <div className='mt-1 text-xl font-semibold'>
                     {tracker.totalSessions()}
                   </div>
                 </div>
-                <div className='rounded-xl border bg-white p-3 text-center dark:border-gray-800 dark:bg-gray-950'>
+                <div className='rounded-xl bg-white p-3 text-center shadow-sm'>
                   <div className='text-xs text-gray-500'>Total volume</div>
                   <div className='mt-1 text-xl font-semibold'>
                     {tracker.totalVolume()}
@@ -72,7 +72,7 @@ export default function Dashboard() {
               </div>
               <Link
                 to='/journal'
-                className='mt-3 inline-flex items-center justify-center gap-1 text-sm font-medium text-indigo-600 hover:underline dark:text-indigo-400'
+                className='mt-3 inline-flex items-center justify-center gap-1 text-sm font-medium text-indigo-600 hover:underline'
               >
                 View Journal <ChevronRight className='h-4 w-4' />
               </Link>
@@ -88,19 +88,19 @@ export default function Dashboard() {
       <section className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
         <div className='grid grid-cols-1 gap-6 lg:grid-cols-12'>
           <div className='lg:col-span-7'>
-            <div className='rounded-2xl border bg-white p-5 dark:border-gray-800 dark:bg-gray-900'>
+            <div className='rounded-2xl bg-white p-5 shadow'>
               <div className='flex items-center justify-between'>
                 <h2 className='text-base font-semibold'>Recent workout</h2>
                 <Link
                   to='/journal'
-                  className='text-sm font-medium text-indigo-600 hover:underline dark:text-indigo-400'
+                  className='text-sm font-medium text-indigo-600 hover:underline'
                 >
                   See all
                 </Link>
               </div>
 
               {!lastWorkout ? (
-                <div className='mt-4 rounded-xl border border-dashed p-8 text-center text-sm text-gray-500 dark:border-gray-800'>
+                <div className='mt-4 rounded-xl p-8 text-center text-sm text-gray-500 shadow-inner'>
                   No workouts yet — finalize a draft in Planner to see it here.
                 </div>
               ) : (
@@ -115,7 +115,7 @@ export default function Dashboard() {
                       </h3>
                     </div>
                     {typeof lastWorkout.durationMin === 'number' && (
-                      <div className='rounded-lg border px-3 py-1 text-sm dark:border-gray-800'>
+                      <div className='rounded-lg border px-3 py-1 text-sm'>
                         {lastWorkout.durationMin} min
                       </div>
                     )}
@@ -123,8 +123,8 @@ export default function Dashboard() {
 
                   <div className='mt-3 overflow-x-auto'>
                     <table className='min-w-full text-sm'>
-                      <thead className='bg-gray-50 text-left dark:bg-gray-900/60'>
-                        <tr>
+                      <thead className='text-left'>
+                        <tr className='bg-gray-50'>
                           <th className='px-3 py-2 font-semibold'>Exercise</th>
                           <th className='px-3 py-2 font-semibold'>Sets</th>
                           <th className='px-3 py-2 font-semibold'>Reps</th>
@@ -135,7 +135,7 @@ export default function Dashboard() {
                       </thead>
                       <tbody>
                         {lastWorkout.items.slice(0, 6).map((it, i) => (
-                          <tr key={i} className='border-t dark:border-gray-800'>
+                          <tr key={i} className='odd:bg-white even:bg-gray-50'>
                             <td className='px-3 py-2'>{it.name}</td>
                             <td className='px-3 py-2'>{it.sets}</td>
                             <td className='px-3 py-2'>{it.reps}</td>
@@ -156,32 +156,32 @@ export default function Dashboard() {
           </div>
 
           <div className='lg:col-span-5'>
-            <div className='rounded-2xl border bg-white p-5 dark:border-gray-800 dark:bg-gray-900'>
+            <div className='rounded-2xl bg-white p-5 shadow'>
               <h2 className='text-base font-semibold'>Quick actions</h2>
               <div className='mt-3 flex flex-wrap gap-3'>
                 <button
                   type='button'
                   onClick={quickNewWorkout}
-                  className='inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500'
+                  className='inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow transition hover:bg-indigo-500'
                 >
                   <PlusCircle className='h-4 w-4' />
                   New Workout
                 </button>
                 <Link
                   to='/planner'
-                  className='inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-800 transition hover:bg-gray-50 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100'
+                  className='inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-800 transition hover:bg-gray-50'
                 >
                   <Play className='h-4 w-4' />
                   Go to Planner
                 </Link>
               </div>
 
-              <h3 className='mt-6 text-sm font-semibold text-gray-700 dark:text-gray-300'>
+              <h3 className='mt-6 text-sm font-semibold text-gray-700'>
                 Recent drafts
               </h3>
               <div className='mt-2 space-y-2'>
                 {drafts.length === 0 ? (
-                  <div className='rounded-xl border border-dashed p-6 text-sm text-gray-500 dark:border-gray-800'>
+                  <div className='rounded-xl p-6 text-center text-sm text-gray-500 shadow-inner'>
                     No drafts yet.
                   </div>
                 ) : (
@@ -189,7 +189,7 @@ export default function Dashboard() {
                     <Link
                       key={d.id}
                       to='/planner'
-                      className='flex items-center justify-between rounded-xl border px-3 py-2 text-sm transition hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-900'
+                      className='flex items-center justify-between rounded-xl px-3 py-2 text-sm shadow-sm transition hover:shadow'
                     >
                       <span className='font-medium'>{d.title}</span>
                       <span className='text-xs text-gray-500'>

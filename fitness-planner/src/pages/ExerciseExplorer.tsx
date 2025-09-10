@@ -29,7 +29,6 @@ export default function ExerciseExplorer() {
   const [lastSessionId, setLastSessionId] = useState<string | null>(null);
   const [localSearch, setLocalSearch] = useState(search ?? '');
 
-  // Filters state (client-side)
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [cat, setCat] = useState<string>('');
   const [equip, setEquip] = useState<string>('');
@@ -96,7 +95,7 @@ export default function ExerciseExplorer() {
 
   return (
     <div className='space-y-6'>
-      <section className='sticky top-[4rem] z-10 border-b bg-white/80 backdrop-blur dark:border-gray-800 dark:bg-gray-950/70'>
+      <section className='sticky top-[4rem] z-10 bg-white/80 backdrop-blur shadow-sm'>
         <div className='mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8'>
           <form
             onSubmit={handleSubmit}
@@ -109,14 +108,14 @@ export default function ExerciseExplorer() {
                 onChange={(e) => setLocalSearch(e.target.value)}
                 placeholder='Search exercises…'
                 autoComplete='off'
-                className='w-full rounded-xl border border-gray-300 bg-white py-2 pl-9 pr-3 text-sm outline-none transition placeholder:text-gray-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-800 dark:bg-gray-900'
+                className='w-full rounded-xl bg-white py-2 pl-9 pr-3 text-sm outline-none shadow transition placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500/20'
               />
             </div>
 
             <button
               type='submit'
               disabled={loading}
-              className='inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500 disabled:opacity-60'
+              className='inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow transition hover:bg-indigo-500 disabled:opacity-60'
             >
               {loading ? (
                 <Loader2 className='h-4 w-4 animate-spin' />
@@ -129,7 +128,7 @@ export default function ExerciseExplorer() {
             <button
               type='button'
               onClick={() => setFiltersOpen((v) => !v)}
-              className='inline-flex items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-800 transition hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100'
+              className='inline-flex items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-800 transition hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50'
             >
               <Filter className='h-4 w-4' />
               Filters
@@ -144,13 +143,13 @@ export default function ExerciseExplorer() {
           >
             <div className='mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3'>
               <div>
-                <label className='block text-xs font-medium text-gray-600 dark:text-gray-400'>
+                <label className='block text-xs font-medium text-gray-600'>
                   Category
                 </label>
                 <select
                   value={cat}
                   onChange={(e) => setCat(e.target.value)}
-                  className='mt-1 w-full rounded-xl border border-gray-300 bg-white px-2 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-800 dark:bg-gray-900'
+                  className='mt-1 w-full rounded-xl bg-white px-2 py-2 text-sm outline-none shadow focus:ring-2 focus:ring-indigo-500/20'
                 >
                   <option value=''>All categories</option>
                   {categories.map((c) => (
@@ -162,13 +161,13 @@ export default function ExerciseExplorer() {
               </div>
 
               <div>
-                <label className='block text-xs font-medium text-gray-600 dark:text-gray-400'>
+                <label className='block text-xs font-medium text-gray-600'>
                   Equipment
                 </label>
                 <select
                   value={equip}
                   onChange={(e) => setEquip(e.target.value)}
-                  className='mt-1 w-full rounded-xl border border-gray-300 bg-white px-2 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-800 dark:bg-gray-900'
+                  className='mt-1 w-full rounded-xl bg-white px-2 py-2 text-sm outline-none shadow focus:ring-2 focus:ring-indigo-500/20'
                 >
                   <option value=''>Any equipment</option>
                   {equipment.map((e) => (
@@ -180,7 +179,7 @@ export default function ExerciseExplorer() {
               </div>
 
               <div>
-                <label className='block text-xs font-medium text-gray-600 dark:text-gray-400'>
+                <label className='block text-xs font-medium text-gray-600'>
                   Muscles (hold Ctrl/Cmd for multiple)
                 </label>
                 <select
@@ -192,7 +191,7 @@ export default function ExerciseExplorer() {
                     );
                     setMuscleSel(selected);
                   }}
-                  className='mt-1 h-[42px] w-full rounded-xl border border-gray-300 bg-white px-2 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-800 dark:bg-gray-900'
+                  className='mt-1 h-[42px] w-full rounded-xl bg-white px-2 py-2 text-sm outline-none shadow focus:ring-2 focus:ring-indigo-500/20'
                 >
                   {muscles.map((m) => (
                     <option key={m.id} value={m.name}>
@@ -204,7 +203,7 @@ export default function ExerciseExplorer() {
             </div>
 
             <div className='mt-3 flex items-center justify-between'>
-              <p className='text-xs text-gray-500 dark:text-gray-400'>
+              <p className='text-xs text-gray-500'>
                 {taxLoading
                   ? 'Loading filter lists…'
                   : taxError
@@ -215,7 +214,7 @@ export default function ExerciseExplorer() {
                 <button
                   type='button'
                   onClick={resetFilters}
-                  className='inline-flex items-center gap-1 text-xs font-medium text-indigo-600 hover:underline dark:text-indigo-400'
+                  className='inline-flex items-center gap-1 text-xs font-medium text-indigo-600 hover:underline'
                   title='Clear filters'
                 >
                   <RotateCcw className='h-3.5 w-3.5' />
@@ -225,15 +224,13 @@ export default function ExerciseExplorer() {
             </div>
           </div>
 
-          <p className='mt-2 text-xs text-gray-500 dark:text-gray-400'>
-            {headerHint}
-          </p>
+          <p className='mt-2 text-xs text-gray-500'>{headerHint}</p>
         </div>
       </section>
 
       <div className='mx-auto max-w-7xl space-y-6 px-4 sm:px-6 lg:px-8'>
         {error && (
-          <div className='rounded-xl border border-red-300 bg-red-50 p-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950'>
+          <div className='rounded-xl bg-red-50 p-3 text-sm text-red-700 shadow'>
             {error}
           </div>
         )}
@@ -264,7 +261,7 @@ export default function ExerciseExplorer() {
                 type='button'
                 onClick={fetchNextPage}
                 disabled={loading}
-                className='inline-flex items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-800 transition hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100'
+                className='inline-flex items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-800 transition hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50'
               >
                 {loading ? (
                   <Loader2 className='h-4 w-4 animate-spin' />
@@ -288,16 +285,13 @@ function SkeletonGrid() {
     <div className='mx-auto max-w-7xl'>
       <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'>
         {Array.from({ length: 8 }).map((_, i) => (
-          <div
-            key={i}
-            className='animate-pulse rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900'
-          >
-            <div className='h-5 w-3/5 rounded bg-gray-200 dark:bg-gray-800' />
+          <div key={i} className='animate-pulse rounded-xl bg-white p-4 shadow'>
+            <div className='h-5 w-3/5 rounded bg-gray-200' />
             <div className='mt-3 flex gap-2'>
-              <div className='h-5 w-20 rounded-full bg-gray-200 dark:bg-gray-800' />
-              <div className='h-5 w-24 rounded-full bg-gray-200 dark:bg-gray-800' />
+              <div className='h-5 w-20 rounded-full bg-gray-200' />
+              <div className='h-5 w-24 rounded-full bg-gray-200' />
             </div>
-            <div className='mt-6 h-9 w-full rounded-xl bg-gray-200 dark:bg-gray-800' />
+            <div className='mt-6 h-9 w-full rounded-xl bg-gray-200' />
           </div>
         ))}
       </div>
@@ -318,8 +312,8 @@ function EmptyState({
 }) {
   return (
     <div className='mx-auto max-w-7xl'>
-      <div className='flex flex-col items-center justify-center rounded-xl border border-dashed p-10 text-center dark:border-gray-800'>
-        <p className='text-sm text-gray-600 dark:text-gray-400'>
+      <div className='flex flex-col items-center justify-center rounded-xl p-10 text-center shadow'>
+        <p className='text-sm text-gray-600'>
           {hasFilters
             ? 'No results for the current filters.'
             : 'No exercises found. Try a different keyword (e.g., press, row, curl).'}
@@ -329,7 +323,7 @@ function EmptyState({
             type='button'
             disabled={loading}
             onClick={onLoadMore}
-            className='mt-3 inline-flex items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-800 transition hover:bg-gray-50 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100'
+            className='mt-3 inline-flex items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-800 transition hover:bg-gray-50'
           >
             {loading ? (
               <Loader2 className='h-4 w-4 animate-spin' />

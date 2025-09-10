@@ -26,21 +26,17 @@ export default function Planner() {
 
   const addCompleted = useJournalStore((s) => s.addCompleted);
 
-  // ensure at least one draft exists on first mount
   useEffect(() => {
     if (sessions.length === 0) {
       createSession('New Workout');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // which draft is selected
   const [selectedId, setSelectedId] = useState<string | null>(null);
   useEffect(() => {
     if (!selectedId && sessions[0]?.id) setSelectedId(sessions[0].id);
   }, [sessions, selectedId]);
 
-  // ✅ derive selected directly from sessions so edits re-render correctly
   const selected = sessions.find((s) => s.id === selectedId);
 
   function finalizeToJournal() {
@@ -51,7 +47,6 @@ export default function Planner() {
     }
     addCompleted(selected);
     removeSession(selected.id);
-    // pick the next available draft after removal
     const next = sessions.find((s) => s.id !== selected.id);
     setSelectedId(next?.id ?? null);
   }
@@ -59,7 +54,7 @@ export default function Planner() {
   function addManualRow() {
     if (!selected) return;
     const item: WorkoutExercise = {
-      exerciseId: Date.now(), // local-only id for manual rows
+      exerciseId: Date.now(),
       name: 'New Exercise',
       sets: 3,
       reps: 10,
@@ -69,9 +64,8 @@ export default function Planner() {
   }
 
   return (
-    <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
+    <div className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8  my-10'>
       <div className='grid grid-cols-1 gap-6 lg:grid-cols-12'>
-        {/* Sidebar: drafts list */}
         <aside className='lg:col-span-4'>
           <div className='flex items-center justify-between'>
             <h2 className='text-base font-semibold'>Draft Workouts</h2>
@@ -81,7 +75,7 @@ export default function Planner() {
                 const id = createSession('New Workout');
                 setSelectedId(id);
               }}
-              className='inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-indigo-500'
+              className='inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow transition hover:bg-indigo-500'
             >
               <FilePlus2 className='h-4 w-4' />
               New
@@ -90,7 +84,7 @@ export default function Planner() {
 
           <div className='mt-3 space-y-2'>
             {sessions.length === 0 ? (
-              <div className='rounded-xl border border-dashed p-6 text-sm text-gray-500 dark:border-gray-800'>
+              <div className='rounded-xl p-6 text-sm text-gray-500 shadow'>
                 No drafts yet.
               </div>
             ) : (
@@ -99,10 +93,8 @@ export default function Planner() {
                   type='button'
                   key={s.id}
                   onClick={() => setSelectedId(s.id)}
-                  className={`w-full rounded-xl border px-3 py-2 text-left transition hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-900 ${
-                    selectedId === s.id
-                      ? 'border-indigo-400 bg-indigo-50 dark:bg-indigo-950/20'
-                      : ''
+                  className={`w-full rounded-xl px-3 py-2 text-left shadow-sm transition hover:shadow ${
+                    selectedId === s.id ? 'bg-indigo-50' : 'bg-white'
                   }`}
                 >
                   <div className='flex items-center justify-between'>
@@ -120,23 +112,21 @@ export default function Planner() {
           </div>
         </aside>
 
-        {/* Editor */}
         <section className='lg:col-span-8'>
           {!selected ? (
-            <div className='rounded-xl border border-dashed p-10 text-center text-sm text-gray-500 dark:border-gray-800'>
+            <div className='rounded-xl p-10 text-center text-sm text-gray-500 shadow'>
               Select a draft to edit.
             </div>
           ) : (
             <div className='space-y-6'>
-              {/* Header */}
               <div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
                 <input
                   value={selected.title}
                   onChange={(e) => renameSession(selected.id, e.target.value)}
-                  className='w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-base font-semibold outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-800 dark:bg-gray-900'
+                  className='w-full rounded-xl bg-white px-3 py-2 text-base font-semibold outline-none shadow focus:ring-2 focus:ring-indigo-500/20'
                 />
                 <div className='flex items-center gap-2'>
-                  <div className='flex items-center gap-2 rounded-xl border px-3 py-2 text-sm dark:border-gray-800'>
+                  <div className='flex items-center gap-2 rounded-xl px-3 py-2 text-sm shadow'>
                     <Clock className='h-4 w-4 text-gray-500' />
                     <input
                       type='number'
@@ -155,7 +145,7 @@ export default function Planner() {
                   <button
                     type='button'
                     onClick={finalizeToJournal}
-                    className='inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-emerald-500'
+                    className='inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow transition hover:bg-emerald-500'
                     title='Finalize and move to Journal'
                   >
                     <CheckCircle2 className='h-4 w-4' />
@@ -170,7 +160,7 @@ export default function Planner() {
                         setSelectedId(next?.id ?? null);
                       }
                     }}
-                    className='inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-sm text-red-600 transition hover:bg-red-50 dark:border-gray-800 dark:hover:bg-red-950/20'
+                    className='inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-sm text-red-600 transition hover:bg-red-50'
                     title='Delete draft'
                   >
                     <Trash2 className='h-4 w-4' />
@@ -179,8 +169,7 @@ export default function Planner() {
                 </div>
               </div>
 
-              {/* Notes */}
-              <div className='rounded-xl border p-3 dark:border-gray-800'>
+              <div className='rounded-xl p-3 shadow'>
                 <div className='flex items-center gap-2 text-sm font-medium'>
                   <NotebookPen className='h-4 w-4 text-gray-500' />
                   Notes
@@ -189,12 +178,11 @@ export default function Planner() {
                   rows={3}
                   value={selected.notes ?? ''}
                   onChange={(e) => setNotes(selected.id, e.target.value)}
-                  className='mt-2 w-full resize-y rounded-lg border border-gray-300 bg-white p-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-gray-800 dark:bg-gray-900'
+                  className='mt-2 w-full resize-y rounded-lg bg-white p-2 text-sm outline-none shadow focus:ring-2 focus:ring-indigo-500/20'
                   placeholder='Optional notes...'
                 />
               </div>
 
-              {/* Editor table */}
               <WorkoutEditor
                 items={selected.items}
                 onAdd={addManualRow}
