@@ -15,7 +15,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Dashboard />} />
           <Route path='/planner' element={<Planner />} />
-          <Route path='/exercise-explorer' element={<ExerciseExplorer />} />
+          <Route path='/exercises' element={<ExerciseExplorer />} />
           <Route path='/journal' element={<Journal />} />
         </Routes>
         <Footer />
